@@ -1,4 +1,4 @@
-{% set version = "5.1.5" %}
+{% set version = "5.2.4" %}
 
 package:
   name: lua
@@ -7,10 +7,12 @@ package:
 source:
   fn: lua-{{ version }}.tar.gz
   url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-  md5: 2e115fe26e435e33b0d5c022e4490567
+  md5: 913fdb32207046b273fdb17aad70be13
   patches:
-    # add proper readline support, as well as proper paths for package loading
-    - update.patch  # [not win]
+    # Enables Lua to look for packages on a relative path
+    - luaconf.patch
+    # Enables readline on linux
+    - Makefile.patch
 
 build:
   number: 0
