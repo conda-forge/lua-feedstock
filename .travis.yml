@@ -3,7 +3,10 @@
 
 language: objective-c
 
-
+env:
+  global:
+    # The BINSTAR_TOKEN secure variable. This is defined canonically in conda-forge.yml.
+    - secure: "tA0ml9JWkbSKvGdcWQ/FUtcxG9qFswaPKYtWWLguUMeHxaXaM/bMtEtJcXMLzyW8yExjV4jVczyRkRAqIdZJbIGrY2dsp+ns0mFoFSMYsn1VvtoChd8IerTAPS9HrgNfR93+kflMh9Nm3lZqx813TVBTlkmAaH5MnN69VgaPbAe+UrZiT3w/6jjG8LmijKU9YyLrN8SgLlTQdSMWGC6bMsulmjzJoz+r5yA9CR4+GIqKiDhrubRVyPKKJuNIGYw8xr4PwYdYBEpt/JiE5YBqde43/fRanOLaLAWyYk5hoFt6TWAfbUVU/53evrfpu1hga2fC4DNS+n2woK6GVln2v4e2pslz6glBLYoB3/00YB8ToAMf6fzMHDWbro9ZCITlB+E1xOZ2rb7G9zkqdx3hIF7+XJvmGfdscht4iSTcLZspl/NGKJKZswqM7QnMhr6kR+IhYheVhJMTPxi4SHttjzBPi4AIEMgNLkI0Y7BKnxyC7/qDPebfnagYkwO4ItZjEYndBQSDeLiOLXUc+JEK9SmFICPgOjcceKSzXg/oGsgrHWChpap94whXZB7VuKcozakkKr3Rg8OfledcHSlJZhyeTL+3rK2AHaIi6tiaRiLVmwIGE1E6MBS6sGuiINFRMTvY0lzyY4ITAYgmrCSbIxDHX++PVPpNhoWANpR3Y8s="
 
 
 before_install:
