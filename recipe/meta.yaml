@@ -13,17 +13,17 @@ source:
     - update.patch  # [not win]
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
   skip: True  # [win]
 
 requirements:
   build:
-    - readline
-    - ncurses
+    - readline 6.2*
+    - ncurses 5.9*
   run:
-    - readline
-    - ncurses
+    - readline 6.2*
+    - ncurses 5.9*
 
 test:
   commands:
