@@ -1,4 +1,4 @@
-{% set version = "5.3.3" %}
+{% set version = "5.3.5" %}
 
 package:
   name: lua
@@ -7,7 +7,7 @@ package:
 source:
   fn: lua-{{ version }}.tar.gz
   url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-  md5: 703f75caa4fdf4a911c1a72e67a27498
+  md5: 4f4b4f323fd3514a68e0ab3da8ce3455
   patches:
     # Enables Lua to look for packages on a relative path
     - luaconf.patch
@@ -15,7 +15,7 @@ source:
     - Makefile.patch
 
 build:
-  number: 1
+  number: 0
   detect_binary_files_with_prefix: true
   skip: True  # [win]
 
