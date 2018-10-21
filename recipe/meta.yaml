@@ -21,11 +21,13 @@ build:
 
 requirements:
   build:
-    - readline 6.2*
-    - ncurses 5.9*
+    - {{ compiler('c') }}
+  host:
+    - readline
+    - ncurses
   run:
-    - readline 6.2*
-    - ncurses 5.9*
+    - readline
+    - ncurses
 
 test:
   commands:
