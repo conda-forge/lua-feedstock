@@ -7,7 +7,7 @@ package:
 source:
   fn: lua-{{ version }}.tar.gz
   url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-  md5: 53a9c68bcc0eda58bdc2095ad5cdfc63
+  sha256: f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c
   patches:
     # Enables Lua to look for packages on a relative path
     - luaconf.patch
@@ -15,7 +15,7 @@ source:
     - Makefile.patch
 
 build:
-  number: 1000
+  number: 1001
   detect_binary_files_with_prefix: true
   skip: True  # [win]
 
