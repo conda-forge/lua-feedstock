@@ -36,8 +36,8 @@ requirements:
 
 test:
   commands:
-    - if not exist %LIBRARY_INC%\\lua\\lua.h exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\liblua.dll exit 1  # [win]
+    - if not exist %LIBRARY_INC%\\lua.h exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\lua.dll exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
     - lua -v

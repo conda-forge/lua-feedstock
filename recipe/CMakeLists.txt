@@ -38,6 +38,7 @@ set(LUA_LIB_SRCS
     src/linit.c)
 
 add_library(liblua ${LUA_LIB_SRCS})
+set_target_properties(liblua PROPERTIES OUTPUT_NAME "lua")
 if(BUILD_SHARED_LIBS)
   target_compile_definitions(liblua PRIVATE LUA_BUILD_AS_DLL)
 endif()
@@ -55,6 +56,12 @@ install(TARGETS liblua
 
 install(TARGETS lua luac DESTINATION bin)
 
-install(DIRECTORY src/
-        DESTINATION include/lua
-        FILES_MATCHING PATTERN "*.h")
+set(LUA_PUBLIC_INCLUDES
+    src/lauxlib.h
+    src/lua.h
+    src/lua.hpp
+    src/luaconf.h
+    src/lualib.h)
+
+install(FILES ${LUA_PUBLIC_INCLUDES}
+        DESTINATION include)
