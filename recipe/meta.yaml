@@ -5,32 +5,41 @@ package:
   version: {{ version }}
 
 source:
-  fn: lua-{{ version }}.tar.gz
-  url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-  sha256: f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c
-  patches:
-    # Enables Lua to look for packages on a relative path
-    - luaconf.patch
-    # Enables readline on linux
-    - Makefile.patch
+  - fn: lua-{{ version }}.tar.gz
+    url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
+    sha256: f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c
+    patches:
+      # Enables Lua to look for packages on a relative path
+      - luaconf.patch
+      # Enables readline on linux
+      - Makefile.patch
+  - path: CMakeLists.txt
 
 build:
-  number: 1002
+  number: 1003
   detect_binary_files_with_prefix: true
-  skip: True  # [win]
 
 requirements:
   build:
-    - {{ compiler('c') }}
+    - {{ compiler('c') }}  # [not win]
+    - vs2017_win-64  # [win64]
+    - vs2017_win-32  # [win32]
+    - ninja  # [win]
+    - cmake  # [win]
+
   host:
-    - readline
-    - ncurses
+    - readline  # [not win]
+    - ncurses  # [not win]
   run:
-    - readline
-    - ncurses
+    - readline  # [not win]
+    - ncurses  # [not win]
 
 test:
   commands:
+    - if not exist %LIBRARY_INC%\\lua.h exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\lua.dll exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
     - lua -v
     - lua -e "print(package.path)"
 
@@ -38,7 +47,9 @@ about:
   home: http://www.lua.org/
   summary: Lua is a powerful, fast, lightweight, embeddable scripting language
   license: MIT
+  license_file: doc/readme.html
 
 extra:
   recipe-maintainers:
     - alexbw
+    - seanyen
