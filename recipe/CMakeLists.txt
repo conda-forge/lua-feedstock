@@ -1,3 +1,5 @@
+# Credit to https://github.com/walterschell/Lua/blob/master/lua-5.3.3/CMakeLists.txt
+# The version is inspired by the above link.
 cmake_minimum_required(VERSION 3.1)
 project(lua C)
 
