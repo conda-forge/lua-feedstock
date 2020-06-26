@@ -25,7 +25,7 @@ requirements:
     - vs2017_win-32  # [win32]
     - ninja  # [win]
     - cmake  # [win]
-
+    - sed  # [unix]
   host:
     - readline  # [not win]
     - ncurses  # [not win]
