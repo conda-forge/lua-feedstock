@@ -1,13 +1,12 @@
-{% set version = "5.3.4" %}
+{% set version = "5.3.5" %}
 
 package:
   name: lua
   version: {{ version }}
 
 source:
-  - fn: lua-{{ version }}.tar.gz
-    url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-    sha256: f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c
+  - url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
+    sha256: 0c2eed3f960446e1a3e4b9a1ca2f3ff893b6ce41942cf54d5dd59ab4b3b058ac
     patches:
       # Enables Lua to look for packages on a relative path
       - luaconf.patch
@@ -16,7 +15,7 @@ source:
   - path: CMakeLists.txt
 
 build:
-  number: 1003
+  number: 0
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -26,7 +25,7 @@ requirements:
     - vs2017_win-32  # [win32]
     - ninja  # [win]
     - cmake  # [win]
-
+    - sed  # [unix]
   host:
     - readline  # [not win]
     - ncurses  # [not win]
