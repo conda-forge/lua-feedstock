@@ -11,7 +11,7 @@ source:
       # Enables Lua to look for packages on a relative path
       - luaconf.patch
       # Build as a shared library
-      - liblua.so.patch
+      - liblua.so.patch  # [linux]
       # Enables readline on linux
       - Makefile.patch
   - path: CMakeLists.txt
