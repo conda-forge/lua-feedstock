@@ -1,10 +1,30 @@
+#!/usr/bin/env bash
+
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
-make generic CC=${CC} INSTALL_TOP=$PREFIX MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib"
-make generic CC=${CC} test
-# If that static library is ever needed, "liblua.a" needs to be added to TO_LIB
 make \
-    INSTALL_TOP=$PREFIX \
-    TO_LIB="liblua${SHLIB_EXT} liblua${SHLIB_EXT}.${PKG_VERSION%.*} liblua${SHLIB_EXT}.$PKG_VERSION" \
+    CC="${CC}" \
+    INSTALL_TOP="${PREFIX}" \
+    MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" \
+    MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib" \
+    LUA_SO="liblua${SHLIB_EXT}" \
+    generic
+
+make \
+    CC="${CC}" \
+    LUA_SO="liblua${SHLIB_EXT}" \
+    test
+
+# If that static library is ever needed, "liblua.a" needs to be added to TO_LIB
+if [ "$(uname)" == "Darwin" ]; then
+    TO_LIB="liblua${SHLIB_EXT} liblua.${PKG_VERSION%.*}${SHLIB_EXT} liblua.${PKG_VERSION}${SHLIB_EXT}"
+else
+    TO_LIB="liblua${SHLIB_EXT} liblua${SHLIB_EXT}.${PKG_VERSION%.*} liblua${SHLIB_EXT}.${PKG_VERSION}"
+fi
+
+make \
+    INSTALL_TOP="$PREFIX" \
+    LUA_SO="liblua${SHLIB_EXT}" \
+    TO_LIB="${TO_LIB}" \
     install
 
 # Create the pkg-config file

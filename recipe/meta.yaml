@@ -11,7 +11,7 @@ source:
       # Enables Lua to look for packages on a relative path
       - luaconf.patch
       # Build as a shared library
-      - liblua.so.patch  # [linux]
+      - liblua.so.patch
       # Enables readline on linux
       - Makefile.patch
   - path: CMakeLists.txt
@@ -40,6 +40,7 @@ requirements:
 
 test:
   commands:
+    - test -f $PREFIX/lib/liblua$SHLIB_EXT  # [unix]
     - if not exist %LIBRARY_INC%\\lua.h exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\lua.dll exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
