@@ -1,7 +1,11 @@
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
 make generic CC=${CC} INSTALL_TOP=$PREFIX MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib"
 make generic CC=${CC} test
-make install INSTALL_TOP=$PREFIX
+# If that static library is ever needed, "liblua.a" needs to be added to TO_LIB
+make \
+    INSTALL_TOP=$PREFIX \
+    TO_LIB="liblua.so liblua${SHLIB_EXT}.${PKG_VERSION%.*} liblua${SHLIB_EXT}.$PKG_VERSION" \
+    install
 
 # Create the pkg-config file
 mkdir -p "${PREFIX}/lib/pkgconfig"
