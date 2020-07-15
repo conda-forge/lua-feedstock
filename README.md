@@ -5,7 +5,7 @@ Home: http://www.lua.org/
 
 Package license: MIT
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: Lua is a powerful, fast, lightweight, embeddable scripting language
 
