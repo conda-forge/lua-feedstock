@@ -27,7 +27,6 @@ set(LUA_LIB_SRCS
     src/lzio.c
     src/lauxlib.c
     src/lbaselib.c
-    src/lbitlib.c
     src/lcorolib.c
     src/ldblib.c
     src/liolib.c
