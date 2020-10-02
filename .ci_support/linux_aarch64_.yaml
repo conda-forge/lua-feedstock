@@ -1,0 +1,27 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
+c_compiler:
+- gcc
+c_compiler_version:
+- '7.5'
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+docker_image:
+- condaforge/linux-anvil-aarch64
+ncurses:
+- '6.2'
+pin_run_as_build:
+  ncurses:
+    max_pin: x.x
+  readline:
+    max_pin: x
+readline:
+- '8.0'
+target_platform:
+- linux-aarch64
