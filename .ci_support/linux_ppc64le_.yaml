@@ -1,15 +1,15 @@
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '8'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 docker_image:
-- condaforge/linux-anvil-comp7
+- condaforge/linux-anvil-ppc64le
 ncurses:
-- '6.1'
+- '6.2'
 pin_run_as_build:
   ncurses:
     max_pin: x.x
@@ -17,3 +17,5 @@ pin_run_as_build:
     max_pin: x
 readline:
 - '8.0'
+target_platform:
+- linux-ppc64le
