@@ -1,12 +1,11 @@
-{% set version = "5.4.0" %}
+{% set version = "5.4.3" %}
 
 package:
   name: lua
   version: {{ version }}
-
 source:
   - url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-    sha256: eac0836eb7219e421a96b7ee3692b93f0629e4cdb0c788432e3d10ce9ed47e28
+    sha256: f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb
     patches:
       # Enables Lua to look for packages on a relative path
       - luaconf.patch
