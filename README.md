@@ -177,5 +177,6 @@ Feedstock Maintainers
 =====================
 
 * [@alexbw](https://github.com/alexbw/)
+* [@izahn](https://github.com/izahn/)
 * [@seanyen](https://github.com/seanyen/)
 
