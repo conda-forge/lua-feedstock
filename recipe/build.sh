@@ -3,13 +3,22 @@
 sed -i "s#@LUA_PREFIX@#${PREFIX}#g" src/Makefile
 
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
-make \
+
+if [ `uname` == Linux ]; then
+    make INSTALL_TOP=$PREFIX \
+         CC="${CC}" \
+         MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib  -DLUA_USE_DLOPEN -DLUA_USE_LINUX -DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"'" \
+         MYLDFLAGS="$LDFLAGS -L$PREFIX/lib -Wl,-rpath=$PREFIX/lib" \
+         linux-readline
+else
+    make \
     CC="${CC}" \
     INSTALL_TOP="${PREFIX}" \
     MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" \
     MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib" \
     LUA_SO="liblua${SHLIB_EXT}" \
     generic
+fi
 
 make \
     CC="${CC}" \
