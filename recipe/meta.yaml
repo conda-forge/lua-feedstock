@@ -1,50 +1,36 @@
-{% set version = "5.4.3" %}
+{% set version = "5.3.6" %}
 
 package:
-  name: lua
+  name: lua53
   version: {{ version }}
 source:
-  - url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-    sha256: f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb
+  - url: https://www.lua.org/ftp/lua-{{ version }}.tar.gz
+    sha256: fc5fd69bb8736323f026672b1b7235da613d7177e72558893a0bdcd320466d60
     patches:
-      # Enables Lua to look for packages on a relative path
-      - luaconf.patch
       # Build as a shared library
       - liblua.so.patch
-      # Enables readline on linux
-      - Makefile.patch
   - path: CMakeLists.txt
 
 build:
-  number: 1
+  number: 0
+  skip: true  # [not linux]
   detect_binary_files_with_prefix: true
-  run_exports:
-    # http://www.lua.org/versions.html#numbering
-    - {{ pin_subpackage('lua', max_pin='x.x') }}
 
 requirements:
   build:
     - {{ compiler('c') }}  # [not win]
-    - vs2017_win-64  # [win64]
-    - vs2017_win-32  # [win32]
-    - ninja          # [win]
-    - cmake          # [win]
-    - sed            # [unix]
-    - make           # [unix]
+    - sed
+    - make
   host:
-    - readline  # [not win]
-    - ncurses   # [not win]
+    - readline
+    - ncurses
   run:
-    - readline  # [not win]
-    - ncurses   # [not win]
+    - readline
+    - ncurses
 
 test:
   commands:
-    - test -f $PREFIX/lib/liblua$SHLIB_EXT  # [unix]
-    - if not exist %LIBRARY_INC%\\lua.h exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\lua.dll exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\lua.exe exit 1  # [win]
+    - test -f $PREFIX/lib/liblua5.3.so
     - lua -v
     - lua -e "print(package.path)"
 

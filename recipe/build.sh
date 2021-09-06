@@ -1,51 +1,33 @@
 #!/usr/bin/env bash
 
-sed -i "s#@LUA_PREFIX@#${PREFIX}#g" src/Makefile
+sed -r -e '/^LUA_(SO|A|T)=/ s/lua/lua5.3/' -e '/^LUAC_T=/ s/luac/luac5.3/' -i src/Makefile
 
-LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
-
-if [ `uname` == Linux ]; then
-    make INSTALL_TOP=$PREFIX \
-         CC="${CC}" \
-         MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib  -DLUA_USE_DLOPEN -DLUA_USE_LINUX -DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"'" \
-         MYLDFLAGS="$LDFLAGS -L$PREFIX/lib -Wl,-rpath=$PREFIX/lib" \
-         linux-readline
-else
-    make \
-    CC="${CC}" \
-    INSTALL_TOP="${PREFIX}" \
-    MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" \
-    MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib" \
-    LUA_SO="liblua${SHLIB_EXT}" \
-    generic
-fi
+make INSTALL_TOP=$PREFIX \
+     CC="${CC}" \
+     MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib  -DLUA_USE_DLOPEN -DLUA_USE_LINUX -DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"'" \
+     MYLDFLAGS="$LDFLAGS -L$PREFIX/lib -Wl,-rpath=$PREFIX/lib" \
+     linux
 
 make \
-    CC="${CC}" \
-    LUA_SO="liblua${SHLIB_EXT}" \
-    test
-
-# If that static library is ever needed, "liblua.a" needs to be added to TO_LIB
-if [ "$(uname)" == "Darwin" ]; then
-    TO_LIB="liblua${SHLIB_EXT} liblua.${PKG_VERSION%.*}${SHLIB_EXT} liblua.${PKG_VERSION}${SHLIB_EXT}"
-else
-    TO_LIB="liblua${SHLIB_EXT} liblua${SHLIB_EXT}.${PKG_VERSION%.*} liblua${SHLIB_EXT}.${PKG_VERSION}"
-fi
-
-make \
+    TO_BIN='lua5.3 luac5.3' \
+    TO_LIB="liblua5.3.a liblua5.3.so liblua5.3.so.5.3 liblua5.3.so.5.3.6" \
+    INSTALL_DATA='cp -d' \
     INSTALL_TOP="$PREFIX" \
-    LUA_SO="liblua${SHLIB_EXT}" \
-    TO_LIB="${TO_LIB}" \
+    INSTALL_INC="$PREFIX"/include/lua5.3 \
+    INSTALL_MAN="$PREFIX"/share/man/man1 \
     install
+
+
+mv ${PREFIX}/share/man/man1/lua.1 ${PREFIX}/share/man/man1/lua5.3.1
+mv ${PREFIX}/share/man/man1/luac.1 ${PREFIX}/share/man/man1/luac5.3.1
 
 # Create the pkg-config file
 mkdir -p "${PREFIX}/lib/pkgconfig"
 (sed -e "s@PKG_VERSION@${PKG_VERSION}@g" -e "s@CONDA_PREFIX@${PREFIX}@g" | \
- sed -E "s@^(V=.+)\.[0-9]+@\1@g" \
- > "${PREFIX}/lib/pkgconfig/lua.pc") << "EOF"
+     sed -E "s@^(V=.+)\.[0-9]+@\1@g" \
+         > "${PREFIX}/lib/pkgconfig/lua53.pc") << "EOF"
 V=PKG_VERSION
 R=PKG_VERSION
-
 prefix=CONDA_PREFIX
 INSTALL_BIN=${prefix}/bin
 INSTALL_INC=${prefix}/include
@@ -56,7 +38,6 @@ INSTALL_CMOD=${prefix}/lib/lua/${V}
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
-
 Name: Lua
 Description: An Extensible Extension Language
 Version: ${R}
