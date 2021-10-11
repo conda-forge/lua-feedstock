@@ -30,18 +30,21 @@ V=PKG_VERSION
 R=PKG_VERSION
 prefix=CONDA_PREFIX
 INSTALL_BIN=${prefix}/bin
-INSTALL_INC=${prefix}/include
+INSTALL_INC=${prefix}/include/lua5.3
 INSTALL_LIB=${prefix}/lib
 INSTALL_MAN=${prefix}/share/man/man1
 INSTALL_LMOD=${prefix}/share/lua/${V}
 INSTALL_CMOD=${prefix}/lib/lua/${V}
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
-includedir=${prefix}/include
+includedir=${prefix}/include/lua5.3
 Name: Lua
 Description: An Extensible Extension Language
 Version: ${R}
 Requires:
-Libs: -L${libdir} -llua -lm -ldl
+Libs: -L${libdir} -llua5.3 -lm -ldl
 Cflags: -I${includedir}
 EOF
+
+ln -sfr ${PREFIX}/lib/pkgconfig/lua53.pc ${PREFIX}/lib/pkgconfig/lua5.3.pc
+ln -sfr ${PREFIX}/lib/pkgconfig/lua53.pc ${PREFIX}/lib/pkgconfig/lua-5.3.pc

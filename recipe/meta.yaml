@@ -12,7 +12,7 @@ source:
   - path: CMakeLists.txt
 
 build:
-  number: 0
+  number: 1
   skip: true  # [not linux]
   detect_binary_files_with_prefix: true
 
