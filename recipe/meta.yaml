@@ -21,6 +21,7 @@ requirements:
     - {{ compiler('c') }}  # [not win]
     - sed
     - make
+    - coreutils
   host:
     - readline
     - ncurses
