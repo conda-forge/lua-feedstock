@@ -4,6 +4,12 @@ sed -i "s#@LUA_PREFIX@#${PREFIX}#g" src/Makefile
 
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
 
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+  export CC=$CC_FOR_BUILD
+  export AR=$($CC_FOR_BUILD -print-prog-name=ar)
+  export RANLIB=$($CC_FOR_BUILD -print-prog-name=ranlib)
+fi
+
 if [ `uname` == Linux ]; then
     make INSTALL_TOP=$PREFIX \
          CC="${CC}" \
