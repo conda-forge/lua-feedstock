@@ -4,12 +4,6 @@ sed -i "s#@LUA_PREFIX@#${PREFIX}#g" src/Makefile
 
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
 
-# if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
-#   export CC=$CC_FOR_BUILD
-#   export AR=$($CC_FOR_BUILD -print-prog-name=ar)
-#   export RANLIB=$($CC_FOR_BUILD -print-prog-name=ranlib)
-# fi
-
 if [ `uname` == Linux ]; then
     make INSTALL_TOP=$PREFIX \
          CC="${CC}" \
@@ -18,12 +12,12 @@ if [ `uname` == Linux ]; then
          linux-readline
 else
     make \
-    CC="${CC}" \
-    INSTALL_TOP="${PREFIX}" \
-    MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" \
-    MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib" \
-    LUA_SO="liblua${SHLIB_EXT}" \
-    generic
+        CC="${CC}" \
+        INSTALL_TOP="${PREFIX}" \
+        MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" \
+        MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib" \
+        LUA_SO="liblua${SHLIB_EXT}" \
+        generic
 fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
