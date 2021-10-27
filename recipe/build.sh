@@ -4,11 +4,11 @@ sed -i "s#@LUA_PREFIX@#${PREFIX}#g" src/Makefile
 
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
-  export CC=$CC_FOR_BUILD
-  export AR=$($CC_FOR_BUILD -print-prog-name=ar)
-  export RANLIB=$($CC_FOR_BUILD -print-prog-name=ranlib)
-fi
+# if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+#   export CC=$CC_FOR_BUILD
+#   export AR=$($CC_FOR_BUILD -print-prog-name=ar)
+#   export RANLIB=$($CC_FOR_BUILD -print-prog-name=ranlib)
+# fi
 
 if [ `uname` == Linux ]; then
     make INSTALL_TOP=$PREFIX \
@@ -26,10 +26,12 @@ else
     generic
 fi
 
-make \
-    CC="${CC}" \
-    LUA_SO="liblua${SHLIB_EXT}" \
-    test
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
+    make \
+        CC="${CC}" \
+        LUA_SO="liblua${SHLIB_EXT}" \
+        test
+fi
 
 # If that static library is ever needed, "liblua.a" needs to be added to TO_LIB
 if [ "$(uname)" == "Darwin" ]; then
