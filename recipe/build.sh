@@ -10,6 +10,14 @@ if [ `uname` == Linux ]; then
          MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib  -DLUA_USE_DLOPEN -DLUA_USE_LINUX -DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"'" \
          MYLDFLAGS="$LDFLAGS -L$PREFIX/lib -Wl,-rpath=$PREFIX/lib" \
          linux-readline
+elif [ `uname` == Darwin ]; then
+    make \
+    CC="${CC}" \
+    INSTALL_TOP="${PREFIX}" \
+    MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib ${LUA_CFLAGS}" \
+    MYLDFLAGS="-L$PREFIX/lib -Wl,-rpath,$PREFIX/lib" \
+    LUA_SO="liblua${SHLIB_EXT}" \
+    macosx
 else
     make \
         CC="${CC}" \
