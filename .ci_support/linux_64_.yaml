@@ -11,10 +11,8 @@ channel_targets:
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 ncurses:
-- '6.2'
+- '6'
 pin_run_as_build:
-  ncurses:
-    max_pin: x.x
   readline:
     max_pin: x
 readline:

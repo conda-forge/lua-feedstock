@@ -11,10 +11,8 @@ channel_targets:
 macos_machine:
 - arm64-apple-darwin20.0.0
 ncurses:
-- '6.2'
+- '6'
 pin_run_as_build:
-  ncurses:
-    max_pin: x.x
   readline:
     max_pin: x
 readline:
