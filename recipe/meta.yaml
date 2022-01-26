@@ -1,11 +1,11 @@
-{% set version = "5.4.3" %}
+{% set version = "5.4.4" %}
 
 package:
   name: lua
   version: {{ version }}
 source:
   - url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz
-    sha256: f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb
+    sha256: 164c7849653b80ae67bec4b7473b884bf5cc8d2dca05653475ec2ed27b9ebf61
     patches:
       # Enables Lua to look for packages on a relative path
       - luaconf.patch
@@ -16,7 +16,7 @@ source:
   - path: CMakeLists.txt
 
 build:
-  number: 2
+  number: 0
   detect_binary_files_with_prefix: true
   run_exports:
     # http://www.lua.org/versions.html#numbering
