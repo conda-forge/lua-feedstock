@@ -3,7 +3,7 @@ BUILD:
 c_compiler:
 - gcc
 c_compiler_version:
-- '9'
+- '12'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -16,9 +16,6 @@ docker_image:
 - quay.io/condaforge/linux-anvil-aarch64
 ncurses:
 - '6'
-pin_run_as_build:
-  readline:
-    max_pin: x
 readline:
 - '8'
 target_platform:
