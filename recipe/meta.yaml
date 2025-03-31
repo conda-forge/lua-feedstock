@@ -25,11 +25,11 @@ requirements:
     - {{ stdlib('c') }}
     - make
   host:
-    - readline 6.2*
-    - ncurses 5.9*
+    - readline
+    - ncurses
   run:
-    - readline 6.2*
-    - ncurses 5.9*
+    - readline
+    - ncurses
 
 test:
   commands:
