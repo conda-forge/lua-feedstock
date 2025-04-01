@@ -10,7 +10,14 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" != "1" ]]; then
     make CC="${CC}" INSTALL_TOP="${PREFIX}" LUA_SO="liblua${SHLIB_EXT}" test
 fi
 
-make INSTALL_TOP="${PREFIX}" LUA_SO="liblua${SHLIB_EXT}" install
+# If that static library is ever needed, "liblua.a" needs to be added to TO_LIB
+if [ "$(uname)" == "Darwin" ]; then
+    TO_LIB="liblua${SHLIB_EXT} liblua.${PKG_VERSION%.*}${SHLIB_EXT} liblua.${PKG_VERSION}${SHLIB_EXT}"
+else
+    TO_LIB="liblua${SHLIB_EXT} liblua${SHLIB_EXT}.${PKG_VERSION%.*} liblua${SHLIB_EXT}.${PKG_VERSION}"
+fi
+
+make INSTALL_TOP="${PREFIX}" LUA_SO="liblua${SHLIB_EXT}" TO_LIB="${TO_LIB}" install
 
 # Create the pkg-config file
 mkdir -p "${PREFIX}/lib/pkgconfig"
