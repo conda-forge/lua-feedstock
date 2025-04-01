@@ -12,7 +12,7 @@ diff -ur a/Makefile b/Makefile
  	src/lua test/hello.lua
 diff -ur a/src/Makefile b/src/Makefile
 --- a/src/Makefile	2025-04-01 17:41:02
-+++ b/src/Makefile	2025-04-01 17:57:38
++++ b/src/Makefile	2025-04-01 18:17:33
 @@ -8,12 +8,15 @@
  PLAT= none
  
@@ -52,14 +52,14 @@ diff -ur a/src/Makefile b/src/Makefile
  	$(RANLIB) $@
  
 +liblua.so: $(CORE_O) $(LIB_O)
-+	$(CC) -shared -ldl -Wl,-soname,liblua.so.$(V) -o $@.$(R) $? -Wl,-rpath=$(INSTALL_TOP)/lib $(LDFLAGS) $(LIBS)
++	$(CC) -shared -ldl -Wl,-soname,liblua.so.$(V) -o $@.$(R) $? $(LDFLAGS) $(LIBS)
 +	ln -sf liblua.so.$(R) liblua.so.$(V)
 +	ln -sf liblua.so.$(R) liblua.so
 +
 +liblua.dylib: $(CORE_O) $(LIB_O)
 +	$(CC) -dynamiclib -install_name $(INSTALL_TOP)/lib/liblua.$(V).dylib \
 +		-compatibility_version $(V) -current_version $(R) \
-+		-o liblua.$(R).dylib $^ -rpath $(INSTALL_TOP)/lib $(LDFLAGS) $(LIBS)
++		-o liblua.$(R).dylib $^ $(LDFLAGS) $(LIBS)
 +	ln -sf liblua.$(R).dylib liblua.$(V).dylib
 +	ln -sf liblua.$(R).dylib liblua.dylib
 +
@@ -71,11 +71,11 @@ diff -ur a/src/Makefile b/src/Makefile
  
  linux:
 -	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
-+	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLIBS="-Wl,-E -ldl -lreadline -lhistory"
++	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLDFLAGS="-Wl,-rpath=$(INSTALL_TOP)/lib" MYLIBS="-Wl,-E -ldl -lreadline -lhistory"
  
  macosx:
 -	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-lreadline"
-+	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLIBS="-fno-common -lreadline"
++	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLDFLAGS="-rpath $(INSTALL_TOP)/lib" MYLIBS="-fno-common -lreadline"
  # use this on Mac OS X 10.3-
  #	$(MAKE) all MYCFLAGS=-DLUA_USE_MACOSX
  
