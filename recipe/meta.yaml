@@ -8,8 +8,11 @@ source:
   - url: https://www.lua.org/ftp/lua-{{ version }}.tar.gz
     sha256: 2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333
     patches:
+      # Enables Lua to look for packages on a relative path
+      # Build as a shared library
+      # Enables readline on linux
       # add proper readline support, as well as proper paths for package loading
-      - update.patch  # [not win]
+      - lua-51-conda-forge.patch
 
 build:
   number: 3
@@ -26,10 +29,8 @@ requirements:
     - make
   host:
     - readline
-    - ncurses
   run:
     - readline
-    - ncurses
 
 test:
   commands:
