@@ -1,0 +1,93 @@
+diff -ur a/Makefile b/Makefile
+--- a/Makefile	2025-03-31 16:21:52
++++ b/Makefile	2025-04-01 11:34:45
+@@ -53,7 +53,7 @@
+ all:	$(PLAT)
+ 
+ $(PLATS) clean:
+-	cd src && $(MAKE) $@
++	cd src && $(MAKE) $@ V=$(V) R=$(R)
+ 
+ test:	dummy
+ 	src/lua test/hello.lua
+diff -ur a/src/Makefile b/src/Makefile
+--- a/src/Makefile	2025-03-31 16:21:52
++++ b/src/Makefile	2025-04-01 16:57:47
+@@ -8,12 +8,15 @@
+ PLAT= none
+ 
+ CC= gcc
+-CFLAGS= -O2 -Wall $(MYCFLAGS)
++CFLAGS= -O2 -Wall -fPIC -I$(INSTALL_TOP)/include -DLUA_USER_DEFAULT_PATH='"$(INSTALL_TOP)/"' $(MYCFLAGS)
++LDFLAGS= -L$(INSTALL_TOP)/lib -Wl,-rpath=$(INSTALL_TOP)/lib $(MYLDFLAGS)
+ AR= ar rcu
+ RANLIB= ranlib
+ RM= rm -f
+ LIBS= -lm $(MYLIBS)
+ 
++# Sets the default path for lua modules
++INSTALL_TOP= /usr/local
+ MYCFLAGS=
+ MYLDFLAGS=
+ MYLIBS=
+@@ -23,6 +26,7 @@
+ PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
+ 
+ LUA_A=	liblua.a
++LUA_SO=	liblua.so
+ CORE_O=	lapi.o lcode.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o \
+ 	lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o  \
+ 	lundump.o lvm.o lzio.o
+@@ -36,7 +40,7 @@
+ LUAC_O=	luac.o print.o
+ 
+ ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O)
+-ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T)
++ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T) $(LUA_SO)
+ ALL_A= $(LUA_A)
+ 
+ default: $(PLAT)
+@@ -51,6 +55,18 @@
+ 	$(AR) $@ $(CORE_O) $(LIB_O)	# DLL needs all object files
+ 	$(RANLIB) $@
+ 
++liblua.so: $(CORE_O) $(LIB_O)
++	$(CC) -shared -ldl -Wl,-soname,liblua.so.$(V) -o $@.$(R) $? -lm $(MYLDFLAGS)
++	ln -sf liblua.so.$(R) liblua.so.$(V)
++	ln -sf liblua.so.$(R) liblua.so
++
++liblua.dylib: $(CORE_O) $(LIB_O)
++	$(CC) -dynamiclib -install_name $(INSTALL_TOP)/lib/liblua.$(V).dylib \
++		-compatibility_version $(V) -current_version $(R) \
++		-o liblua.$(R).dylib $^
++	ln -sf liblua.$(R).dylib liblua.$(V).dylib
++	ln -sf liblua.$(R).dylib liblua.dylib
++
+ $(LUA_T): $(LUA_O) $(LUA_A)
+ 	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
+ 
+@@ -96,10 +112,10 @@
+ 	$(MAKE) all MYCFLAGS=
+ 
+ linux:
+-	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
++	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLIBS="-Wl,-E -ldl -lreadline -lhistory"
+ 
+ macosx:
+-	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-lreadline"
++	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLIBS="-fno-common -lreadline"
+ # use this on Mac OS X 10.3-
+ #	$(MAKE) all MYCFLAGS=-DLUA_USE_MACOSX
+ 
+diff -ur a/src/luaconf.h b/src/luaconf.h
+--- a/src/luaconf.h	2025-03-31 16:21:52
++++ b/src/luaconf.h	2025-04-01 11:43:23
+@@ -94,7 +94,7 @@
+ 	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+ 
+ #else
+-#define LUA_ROOT	"/usr/local/"
++#define LUA_ROOT	LUA_USER_DEFAULT_PATH
+ #define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
+ #define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
+ #define LUA_PATH_DEFAULT  \
