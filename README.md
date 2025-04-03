@@ -191,6 +191,7 @@ Feedstock Maintainers
 =====================
 
 * [@alexbw](https://github.com/alexbw/)
+* [@anjos](https://github.com/anjos/)
 * [@izahn](https://github.com/izahn/)
 * [@seanyen](https://github.com/seanyen/)
 
