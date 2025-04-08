@@ -13,14 +13,7 @@ Current build status
 ====================
 
 
-<table><tr>
-    <td>Travis</td>
-    <td>
-      <a href="https://app.travis-ci.com/conda-forge/lua-feedstock">
-        <img alt="linux" src="https://img.shields.io/travis/com/conda-forge/lua-feedstock/main.svg?label=Linux">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
@@ -205,6 +198,7 @@ Feedstock Maintainers
 =====================
 
 * [@alexbw](https://github.com/alexbw/)
+* [@anjos](https://github.com/anjos/)
 * [@izahn](https://github.com/izahn/)
 * [@seanyen](https://github.com/seanyen/)
 

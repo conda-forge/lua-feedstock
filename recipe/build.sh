@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 sed -i "s#@LUA_PREFIX@#${PREFIX}#g" src/Makefile
 
 LUA_CFLAGS="-DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"' -DLUA_USE_POSIX"
