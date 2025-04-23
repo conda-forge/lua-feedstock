@@ -1,0 +1,76 @@
+schema_version: 1
+
+context:
+  version: 5.4.7
+
+package:
+  name: lua
+  version: ${{ version }}
+
+source:
+  - url: http://www.lua.org/ftp/lua-${{ version }}.tar.gz
+    sha256: 9fbf5e28ef86c69858f6d3d34eccc32e911c1a28b4120ff3e84aaa70cfbf1e30
+    patches:
+      # Enables Lua to look for packages on a relative path
+      - luaconf.patch
+      # Build as a shared library
+      - liblua.so.patch
+      # Enables readline on linux
+      - Makefile.patch
+  - path: CMakeLists.txt
+
+build:
+  number: 1
+  prefix_detection:
+    ignore_binary_files: true
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
+    - if: win
+      then: 
+      - ninja
+      - cmake
+    - if: unix
+      then: 
+      - sed
+      - make
+  host:
+    - if: not win
+      then:
+      - readline
+      - ncurses
+  run:
+    - if: not win
+      then:
+      - readline
+      - ncurses
+  run_exports:
+    - ${{ pin_subpackage('lua', upper_bound='x.x') }}
+
+tests:
+  - package_contents:
+      include: 
+        - lua.h
+      bin:
+        - lua
+      lib:
+        - lua
+  - script:
+    - lua -v
+    - "lua -e \"print(package.path)\""
+
+about:
+  summary: Lua is a powerful, fast, lightweight, embeddable scripting language
+  license: MIT
+  license_file: doc/readme.html
+  homepage: http://www.lua.org/
+
+extra:
+  recipe-maintainers:
+    - alexbw
+    - seanyen
+    - izahn
+    - anjos
+    - baszalmstra

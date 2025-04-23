@@ -16,3 +16,5 @@ bot:
   automerge: true
   abi_migration_branches:
     - "5.1"
+conda_install_tool: pixi
+conda_build_tool: rattler-build
