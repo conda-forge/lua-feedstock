@@ -20,9 +20,7 @@ source:
   - path: CMakeLists.txt
 
 build:
-  number: 0
-  prefix_detection:
-    ignore_binary_files: true
+  number: 1
 
 requirements:
   build:
