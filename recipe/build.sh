@@ -11,7 +11,7 @@ if [ `uname` == Linux ]; then
          CC="${CC}" \
          MYCFLAGS="${CLFAGS} -fPIC -I$PREFIX/include -L$PREFIX/lib  -DLUA_USE_DLOPEN -DLUA_USE_LINUX -DLUA_USER_DEFAULT_PATH='\"$PREFIX/\"'" \
          MYLDFLAGS="$LDFLAGS -L$PREFIX/lib -Wl,-rpath=$PREFIX/lib" \
-         linux-readline
+         linux
 elif [ `uname` == Darwin ]; then
     make \
     CC="${CC}" \
