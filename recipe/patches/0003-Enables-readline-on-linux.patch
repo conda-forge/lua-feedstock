@@ -1,17 +1,6 @@
-From 889d1e8f9ab7ae3664c60c55eb45783d686e285f Mon Sep 17 00:00:00 2001
-From: Bas Zalmstra <4995967+baszalmstra@users.noreply.github.com>
-Date: Sat, 14 Jun 2025 15:11:06 +0200
-Subject: [PATCH 3/3] Enables readline on linux
-
----
- src/Makefile | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/src/Makefile b/src/Makefile
-index 479a560..bfa5139 100644
---- a/src/Makefile
-+++ b/src/Makefile
-@@ -11,6 +11,9 @@ CFLAGS= -O2 -Wall -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
+--- a/src/Makefile	2025-07-07 02:19:14
++++ b/src/Makefile	2026-01-05 15:23:45
+@@ -11,6 +11,9 @@
  LDFLAGS= $(SYSLDFLAGS) $(MYLDFLAGS)
  LIBS= -lm $(SYSLIBS) $(MYLIBS)
  
@@ -21,7 +10,7 @@ index 479a560..bfa5139 100644
  AR= ar rcu
  RANLIB= ranlib
  RM= rm -f
-@@ -20,7 +23,7 @@ SYSCFLAGS=
+@@ -20,13 +23,13 @@
  SYSLDFLAGS=
  SYSLIBS=
  
@@ -30,11 +19,18 @@ index 479a560..bfa5139 100644
  MYLDFLAGS=
  MYLIBS=
  MYOBJS=
-@@ -139,10 +142,10 @@ linux-noreadline:
- 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX" SYSLIBS="-Wl,-E -ldl"
  
- linux-readline:
--	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline"
+ # Special flags for compiler modules; -Os reduces code size.
+-CMCFLAGS= 
++CMCFLAGS=
+ 
+ # == END OF USER SETTINGS -- NO NEED TO CHANGE ANYTHING BELOW THIS LINE =======
+ 
+@@ -121,10 +124,10 @@
+ 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_IOS"
+ 
+ Linux linux:
+-	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX" SYSLIBS="-Wl,-E -ldl"
 +	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline -lhistory -lncursesw"
  
  Darwin macos macosx:
@@ -42,7 +38,4 @@ index 479a560..bfa5139 100644
 +	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE -fno-common" SYSLIBS="-lreadline"
  
  mingw:
- 	$(MAKE) "LUA_A=lua54.dll" "LUA_T=lua.exe" \
--- 
-2.47.0.windows.2
-
+ 	$(MAKE) "LUA_A=lua55.dll" "LUA_T=lua.exe" \
