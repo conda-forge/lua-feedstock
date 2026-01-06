@@ -1,11 +1,14 @@
-{% set version = "5.1.5" %}
+schema_version: 1
+
+context:
+  version: 5.1.5
 
 package:
   name: lua
-  version: {{ version }}
+  version: ${{ version }}
 
 source:
-  - url: https://www.lua.org/ftp/lua-{{ version }}.tar.gz
+  - url: https://www.lua.org/ftp/lua-${{ version }}.tar.gz
     sha256: 2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333
     patches:
       # Enables Lua to look for packages on a relative path
@@ -15,34 +18,34 @@ source:
       - lua-51-conda-forge.patch
 
 build:
-  number: 3
-  detect_binary_files_with_prefix: true
-  skip: True  # [win]
-  run_exports:
-    # http://www.lua.org/versions.html#numbering
-    - {{ pin_subpackage('lua', max_pin='x.x') }}
+  number: 4
+  skip: win
+  prefix_detection:
+    ignore_binary_files: true
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ stdlib('c') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
     - make
   host:
     - readline
   run:
     - readline
+  run_exports:
+    - ${{ pin_subpackage('lua', upper_bound='x.x') }}
 
-test:
-  commands:
-    - test -f $PREFIX/lib/liblua$SHLIB_EXT
-    - lua -v
-    - lua -e "print(package.path)"
+tests:
+  - script:
+      - test -f $PREFIX/lib/liblua$SHLIB_EXT
+      - lua -v
+      - lua -e "print(package.path)"
 
 about:
-  home: http://www.lua.org/
   summary: Lua is a powerful, fast, lightweight, embeddable scripting language
   license: MIT
   license_file: COPYRIGHT
+  homepage: http://www.lua.org/
 
 extra:
   recipe-maintainers:
